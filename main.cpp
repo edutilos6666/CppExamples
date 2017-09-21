@@ -10,6 +10,19 @@
 #include "ComplexNumber.h"
 #include "Box.h"
 #include "OperatorsExample.h"
+#include "InheritanceExample.h"
+
+
+#include <mysql_connection.h>
+#include <mysql_driver.h>
+
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
+
+#include "MysqlConnectorExample.h"
 
 using namespace std;
 
@@ -18,11 +31,171 @@ void testPersonDAO();
 void testComplexNumber();
 void testBox();
 void testOperatorsExample();
+void testInheritanceExample();
+void testMysql();
+void testStringStream();
+void testMysqlConnectorExample();
+void testUserInput();
+void testUserInput2();
 
 int main() {
-    testOperatorsExample();
+    testUserInput2();
     return 0;
 }
+
+void testUserInput2() {
+    long id;
+    string name;
+    int age;
+    double wage;
+    bool active;
+
+    cout << "insert your id , name , age, wage and active: " << endl;
+    // whitespace separated
+    cin >> id >> name >> age >> wage >> boolalpha >> active  ;
+    cout << "<<Your inputs>>" << endl;
+    cout << "id = " << id << endl ;
+    cout << "name = " << name << endl;
+    cout << "age = " << age << endl;
+    cout << "wage = " << wage << endl;
+    cout << "active = " << boolalpha << active  << endl;
+    cout << endl;
+}
+
+void testUserInput() {
+    long id;
+    string name;
+    int age;
+    double wage;
+    bool active;
+
+    cout << "insert your id: " << endl;
+    cin >> id ;
+    cout << "insert your name: " << endl;
+    cin >> name;
+    cout << "insert your age: " << endl;
+    cin >> age;
+    cout << "insert your wage: " << endl;
+    cin >> wage;
+    cout << "insert whether you are active: " << endl;
+    cin >> boolalpha >> active ;
+    cout << "<<Your inputs>>" << endl;
+    cout << "id = " << id << endl ;
+    cout << "name = " << name << endl;
+    cout << "age = " << age << endl;
+    cout << "wage = " << wage << endl;
+    cout << "active = " << boolalpha << active  << endl;
+    cout << endl;
+}
+
+
+void testMysqlConnectorExample() {
+   MysqlConnectorExample runner ;
+    runner.example1();
+}
+
+
+void testStringStream() {
+  stringstream ss ;
+    ss << "foo" ;
+    cout << ss.str() << endl;
+    ss.str("");
+    ss.clear();
+    ss << "bar";
+    cout << ss.str() << endl;
+}
+
+void testMysql() {
+    cout << endl;
+    cout << "Running 'SELECT 'Hello World!' AS _message'..." << endl;
+
+    try {
+        sql::Driver *driver;
+        sql::Connection *con;
+        sql::Statement *stmt;
+        sql::ResultSet *res;
+
+        /* Create a connection */
+
+        driver = get_driver_instance();
+//        driver = sql::mysql::get_driver_instance();    //requires #include <mysql_driver.h>
+      //  con = driver->connect("tcp://127.0.0.1:3306", "root", "root");
+        con = driver->connect("localhost", "root", "root");
+        /* Connect to the MySQL test database */
+        con->setSchema("test");
+
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT 'Hello World!' AS _message");
+        while (res->next()) {
+            cout << "\t... MySQL replies: ";
+            /* Access column data by alias or column name */
+            cout << res->getString("_message") << endl;
+            cout << "\t... MySQL says it again: ";
+            /* Access column data by numeric offset, 1 is the first column */
+            cout << res->getString(1) << endl;
+        }
+        delete res;
+        delete stmt;
+        delete con;
+
+    } catch (sql::SQLException &e) {
+        cout << "# ERR: SQLException in " << __FILE__;
+        cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+        cout << "# ERR: " << e.what();
+        cout << " (MySQL error code: " << e.getErrorCode();
+        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+    }
+
+    cout << endl;
+}
+
+void testInheritanceExample() {
+    CustomFile cf1("foo.read"),
+    cf2("foo.write"),
+    cf3("foo.exe"),
+    cf4("foo.read.write.exe");
+
+    cout << "<<Infos on " << cf1.toString() << endl;
+    cout << "is readable = " << cf1.isReadable() << endl;
+    cout << "is writable = " << cf1.isWritable() << endl;
+    cout << "is executable = " << cf1.isExecutable() << endl;
+    cf1.read();
+    cf1.write();
+    cf1.execute();
+    cout << endl;
+
+    cout << "<<Infos on " << cf2.toString() << endl;
+    cout << "is readable = " << cf2.isReadable() << endl;
+    cout << "is writable = " << cf2.isWritable() << endl;
+    cout << "is executable = " << cf2.isExecutable() << endl;
+    cf2.read();
+    cf2.write();
+    cf2.execute();
+    cout << endl;
+
+
+
+    cout << "<<Infos on " << cf3.toString() << endl;
+    cout << "is readable = " << cf3.isReadable() << endl;
+    cout << "is writable = " << cf3.isWritable() << endl;
+    cout << "is executable = " << cf3.isExecutable() << endl;
+    cf3.read();
+    cf3.write();
+    cf3.execute();
+    cout << endl;
+
+
+    cout << "<<Infos on " << cf4.toString() << endl;
+    cout << "is readable = " << cf4.isReadable() << endl;
+    cout << "is writable = " << cf4.isWritable() << endl;
+    cout << "is executable = " << cf4.isExecutable() << endl;
+    cf4.read();
+    cf4.write();
+    cf4.execute();
+    cout << endl;
+
+}
+
 
 void testOperatorsExample() {
     OperatorsExample ops;

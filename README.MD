@@ -5,3 +5,9 @@ Following Technologies have been used: <br/>
 <li>GDB 7.11.1</li>
 <li>OS: Ubuntu 16.04LTS</li>
 </ul>
+
+
+<br/>
+<h3>Generating executable file</h3>
+cmake .  <br/>
+make  <br/>

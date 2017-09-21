@@ -1,0 +1,177 @@
+FunctionExample.py            SMTPExample.py
+InheritanceExample.py         SQLAlchemyExample.py
+IOExample.py                  StringExample.py
+ListExample.py                SympyExample.py
+LoopExample.py  
+
+MysqlClientExample.py 
+
+
+
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std; 
+class Person
+{
+private: 
+	long id; 
+	string name; 
+	int age; 
+	double wage; 
+	bool active;
+public:
+	Person();
+	Person(long id, string name, int age, double wage, bool active); 
+	~Person();
+	void setId(long id); 
+	void setName(string name); 
+	void setAge(int age); 
+	void setWage(double wage); 
+	void setActive(bool active); 
+	long getId(); 
+	string getName(); 
+	int getAge(); 
+	double getWage(); 
+	bool isActive(); 
+	string toString(); 
+};
+
+
+
+
+
+
+
+#include "Person.h"
+
+
+Person::Person() {
+
+}
+Person::~Person()
+{
+	//cout << "Person instance was destroyed." << endl; 
+}
+
+
+Person::Person(long id = 0 , string name = "", int age= 0, double wage = 0.0, bool active= false) {
+	this->id = id; 
+	this->name = name; 
+	this->age = age; 
+	this->wage = wage; 
+	this->active = active; 
+}
+
+void Person::setId(long id) {
+	this->id = id; 
+}
+void Person::setName(string name) {
+	this->name = name; 
+}
+void Person::setAge(int age) {
+	this->age = age; 
+}
+void Person::setWage(double wage) {
+	this->wage = wage; 
+}
+void Person::setActive(bool active) {
+	this->active = active; 
+}
+long Person::getId() {
+	return this->id; 
+}
+string Person::getName() {
+	return this->name; 
+}
+int Person::getAge() {
+	return this->age; 
+}
+double Person::getWage() {
+	return this->wage; 
+}
+bool Person::isActive() {
+	return this->active; 
+}
+
+
+string Person::toString() {
+	stringstream ss; 
+	ss << "name = " << this->name << endl
+		<< "age = " << this->age << endl
+		<< "wage = " << this->wage << endl
+		<< "active = " << this->active << endl; 
+	return ss.str(); 
+}
+
+#############################################
+
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std 
+
+	stringstream ss; 
+	ss << "name = " << this->name << endl
+		<< "age = " << this->age << endl
+		<< "wage = " << this->wage << endl
+		<< "active = " << this->active << endl; 
+	return ss.str(); 
+ 
+
+
+#############################################
+PersonDAO 
+void PersonDAOImpl::savePerson(Person p) {
+	this->personContainer.insert(pair<long, Person>(p.getId(), p)); 
+}
+void PersonDAOImpl::updatePerson(long id, Person newP) {
+	pair<long, Person> p(id, newP); 
+	this->personContainer.erase(id); 
+	this->personContainer.insert(p); 
+}
+void PersonDAOImpl::deletePerson(long id) {
+	this->personContainer.erase(id); 
+}
+Person PersonDAOImpl::findById(long id) {
+	return this->personContainer[id]; 
+}
+vector<Person> PersonDAOImpl::findAll() {
+	vector<Person> vector; 
+	for (auto it = this->personContainer.begin(); it != this->personContainer.end(); ++it) {
+		Person p = (*it).second; 
+		vector.push_back(p); 
+	}
+	return vector; 
+}
+
+
+
+
+#include "Person.h"
+#include <vector>
+#include <map>
+class PersonDAO
+{
+public:
+	//virtual ~PersonDAO();
+	virtual void savePerson(Person p) = 0; 
+	virtual void updatePerson(long id, Person newP) = 0; 
+	virtual void deletePerson(long id) = 0; 
+	virtual Person findById(long id) = 0; 
+	virtual vector<Person> findAll() = 0; 
+};
+
+
+class PersonDAOImpl : public PersonDAO {
+private:
+	map<long , Person> personContainer; 
+public: 
+	void savePerson(Person p);
+	void updatePerson(long id, Person newP);
+	void deletePerson(long id);
+	Person findById(long id);
+	vector<Person> findAll();
+};
+
