@@ -25,6 +25,9 @@ set(TARGET_NAME CppExamples)
 #target_link_libraries(CppExamples ${MYSQL_LIB})
 
 #target_link_libraries(CppExamples ${MySQL_LIBRARIES})
-set(SOURCE_FILES main.cpp Person.cpp Person.h PersonDAO.cpp PersonDAO.h ComplexNumber.cpp ComplexNumber.h Box.cpp Box.h OperatorsExample.cpp OperatorsExample.h InheritanceExample.cpp InheritanceExample.h MysqlConnectorExample.cpp MysqlConnectorExample.h)
+
+find_package(Qt5Widgets REQUIRED)
+set(SOURCE_FILES main.cpp Person.cpp Person.h PersonDAO.cpp PersonDAO.h ComplexNumber.cpp ComplexNumber.h Box.cpp Box.h OperatorsExample.cpp OperatorsExample.h InheritanceExample.cpp InheritanceExample.h MysqlConnectorExample.cpp MysqlConnectorExample.h QtExamples.cpp QtExamples.h)
 add_executable(CppExamples ${SOURCE_FILES})
 target_link_libraries(CppExamples mysqlcppconn)
+target_link_libraries(CppExamples Qt5::Widgets)

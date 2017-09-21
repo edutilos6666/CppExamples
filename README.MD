@@ -11,3 +11,9 @@ Following Technologies have been used: <br/>
 <h3>Generating executable file</h3>
 cmake .  <br/>
 make  <br/>
+
+
+<br/>
+qt install in ubuntu: <br/> 
+sudo apt install qtdeclarative5-dev
+<br/><br/>

@@ -24,6 +24,19 @@
 
 #include "MysqlConnectorExample.h"
 
+//QT
+#include <QApplication>
+#include <QDebug>
+#include <QFormLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QWidget>
+#include <QMessageBox>
+
+
+#include "QtExamples.h"
+
 using namespace std;
 
 void testPerson();
@@ -37,10 +50,91 @@ void testStringStream();
 void testMysqlConnectorExample();
 void testUserInput();
 void testUserInput2();
+void testQT1(int argc, char** argv);
+void testQtExamples(int argc, char** argv);
 
-int main() {
-    testUserInput2();
+int main(int argc, char** argv) {
+    testQtExamples(argc, argv);
     return 0;
+}
+
+
+void testQtExamples(int argc, char** argv) {
+    QtExamples runner;
+    runner.runQGridLayoutExample(argc, argv);
+}
+
+void testQT1(int argc, char** argv) {
+    qDebug() << QT_VERSION_STR << endl;
+    QApplication app(argc, argv);
+    QWidget mainWidget;
+    mainWidget.setWindowTitle("QT Example1");
+    mainWidget.setGeometry(10, 10, 500, 500);
+    mainWidget.setWindowModality(Qt::WindowModal);
+    //layout
+    QFormLayout* mainLayout = new QFormLayout();
+    mainWidget.setLayout(mainLayout);
+    //title
+    QLabel *lblTitle= new QLabel("QT Example1");
+    mainLayout->addRow(new QLabel(), lblTitle);
+    //id
+    QLabel *lblId = new QLabel("Id: ");
+    QLineEdit *editId = new QLineEdit();
+    mainLayout->addRow(lblId, editId);
+    //name
+    QLabel *lblName = new QLabel("Name: ");
+    QLineEdit *editName = new QLineEdit();
+    mainLayout->addRow(lblName, editName);
+    //age
+    QLabel *lblAge = new QLabel("Age: ");
+    QLineEdit *editAge = new QLineEdit();
+    mainLayout->addRow(lblAge, editAge);
+    //wage
+    QLabel *lblWage = new QLabel("Wage: ");
+    QLineEdit *editWage = new QLineEdit();
+    mainLayout->addRow(lblWage, editWage);
+    //active
+    QLabel *lblActive = new QLabel("Active: ");
+    QLineEdit *editActive = new QLineEdit();
+    mainLayout->addRow(lblActive, editActive);
+    //buttons
+    QPushButton *btnOk = new QPushButton("Ok");
+    QPushButton *btnClear = new QPushButton("Clear");
+    mainLayout->addRow(btnOk , btnClear);
+
+    //signals and slots
+    QObject::connect(btnOk , &QPushButton::clicked, [&](){
+        try {
+            long id = editId->text().toLong();
+            string name = editName->text().toStdString();
+            int age = editAge->text().toInt();
+            double wage = editWage->text().toDouble();
+            string temp = editActive->text().toStdString();
+            bool active = (temp == "true")? true: false;
+
+            stringstream ss ;
+            ss << "<<Infos>>" << endl;
+            ss << "id = "<< id << endl;
+            ss << "name = " << name << endl;
+            ss << "age = " << age << endl;
+            ss << "wage = " << wage << endl;
+            ss  << "active = " <<  boolalpha <<  active << endl;
+            QMessageBox::information(&mainWidget, "<<Infos>>", QString::fromStdString(ss.str()));
+        } catch(exception &ex) {
+            QMessageBox::critical(&mainWidget, "<<Error>>", QString::fromStdString(ex.what()));
+        }
+    });
+
+    QObject::connect(btnClear, &QPushButton::clicked, [&](){
+        editId->setText("");
+        editName->setText("");
+        editAge->setText("");
+        editWage->setText("");
+        editActive->setText("");
+    });
+
+    mainWidget.show();
+    app.exec();
 }
 
 void testUserInput2() {
